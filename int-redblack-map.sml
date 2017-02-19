@@ -84,9 +84,10 @@ structure IntRedBlackMap :> ORD_MAP where type Key.ord_key = int =
 			      (* end case *))
 		      | _ => T(B, a, yk, y, ins b)
 		    (* end case *))
-	  val T(_, a, yk, y, b) = ins m
-	  in
-	    MAP(!nItems', T(B, a, yk, y, b))
+          in
+	    case ins m
+  	    of E => raise Fail "cannot be empty here"
+	     | T(_, a, yk, y, b) => MAP(!nItems', T(B, a, yk, y, b))
 	  end
     fun insert' ((xk, x), m) = insert (m, xk, x)
 

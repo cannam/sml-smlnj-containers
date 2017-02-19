@@ -79,9 +79,10 @@ functor RedBlackSetFn (K : ORD_KEY) :> ORD_SET where type Key.ord_key = K.ord_ke
 			| _ => T(B, a, y, ins b)
 		      (* end case *))
 		(* end case *))
-	  val T(_, a, y, b) = ins m
-	  in
-	    SET(!nItems', T(B, a, y, b))
+          in
+	    case ins m
+  	    of E => raise Fail "cannot be empty here"
+             | T(_, a, y, b) => SET(!nItems', T(B, a, y, b))
 	  end
     fun add' (x, m) = add (m, x)
 
