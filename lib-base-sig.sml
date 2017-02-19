@@ -17,8 +17,5 @@ signature LIB_BASE =
     val failure : {module : string, func : string, msg : string} -> 'a
 	(* raise the exception Fail with a standard format message. *)
 
-    val version : {date : string, system : string, version_id : int list}
-    val banner : string
-
   end (* LIB_BASE *)
 
