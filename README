@@ -1,0 +1,7 @@
+
+Container data structures extracted from the SML/NJ library.
+
+The MLB file sml-smlnj-containers.mlb is provided for use with MLton etc.
+
+See COPYING for copyright & licence details.
+
