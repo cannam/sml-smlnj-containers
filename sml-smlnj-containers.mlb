@@ -12,5 +12,8 @@ hash-table-rep.sml
 mono-hash-table-sig.sml
 hash-table-fn.sml
 int-hash-table.sml
+fifo-sig.sml
+fifo.sml
 listsort-sig.sml
 list-mergesort.sml
+
