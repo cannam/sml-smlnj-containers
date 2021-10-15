@@ -16,4 +16,9 @@ fifo-sig.sml
 fifo.sml
 listsort-sig.sml
 list-mergesort.sml
+array-sort-sig.sml
+array-qsort.sml
+array-qsort-fn.sml
+mono-array-sort-sig.sml
+
 
