@@ -15,8 +15,8 @@ structure ArrayQSort : ARRAY_SORT =
 
     type 'a array = 'a A.array
 
-    val sub = Unsafe.Array.sub
-    val update = Unsafe.Array.update
+    val sub = A.sub
+    val update = A.update
 
     fun isort (array, start, n, cmp) = let
           fun item i = sub(array,i)
