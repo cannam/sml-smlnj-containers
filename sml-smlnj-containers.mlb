@@ -7,6 +7,10 @@ ord-map-sig.sml
 redblack-set-fn.sml
 redblack-map-fn.sml
 int-redblack-map.sml
+splaytree-sig.sml
+splaytree.sml
+splay-set-fn.sml
+splay-map-fn.sml
 hash-key-sig.sml
 hash-table-rep.sml
 mono-hash-table-sig.sml
