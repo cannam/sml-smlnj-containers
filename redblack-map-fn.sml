@@ -3,8 +3,6 @@
  * COPYRIGHT (c) 2014 The Fellowship of SML/NJ (http://www.smlnj.org)
  * All rights reserved.
  *
- * COPYRIGHT (c) 1999 Bell Labs, Lucent Technologies.
- *
  * This code is based on Chris Okasaki's implementation of
  * red-black trees.  The linear-time tree construction code is
  * based on the paper "Constructing red-black trees" by Hinze,
@@ -81,12 +79,65 @@ functor RedBlackMapFn (K : ORD_KEY) :> ORD_MAP where type Key.ord_key = K.ord_ke
 			| _ => T(B, a, yk, y, ins b)
 		      (* end case *))
 		(* end case *))
-          in
-	    case ins m
-  	    of E => raise Fail "cannot be empty here"
-	     | T(_, a, yk, y, b) => MAP(!nItems', T(B, a, yk, y, b))
-	  end
+    in
+        case ins m of
+            E => raise Fail "cannot be empty here"
+	 | T(_, a, yk, y, b) => MAP(!nItems', T(B, a, yk, y, b))
+    end
     fun insert' ((xk, x), m) = insert (m, xk, x)
+
+    fun insertWithi comb (MAP(nItems, m), xk, x) = let
+	  val nItems' = ref nItems
+	  fun ins E = (nItems' := nItems+1; T(R, E, xk, x, E))
+            | ins (s as T(color, a, yk, y, b)) = (case K.compare(xk, yk)
+		 of LESS => (case a
+		       of T(R, c, zk, z, d) => (case K.compare(xk, zk)
+			     of LESS => (case ins c
+				   of T(R, e, wk, w, f) =>
+					T(R, T(B,e,wk, w,f), zk, z, T(B,d,yk,y,b))
+                		    | c => T(B, T(R,c,zk,z,d), yk, y, b)
+				  (* end case *))
+			      | EQUAL => let
+				  val x' = comb(xk, z, x)
+				  in
+				    T(color, T(R, c, xk, x', d), yk, y, b)
+				  end
+			      | GREATER => (case ins d
+				   of T(R, e, wk, w, f) =>
+					T(R, T(B,c,zk,z,e), wk, w, T(B,f,yk,y,b))
+                		    | d => T(B, T(R,c,zk,z,d), yk, y, b)
+				  (* end case *))
+			    (* end case *))
+			| _ => T(B, ins a, yk, y, b)
+		      (* end case *))
+		  | EQUAL => T(color, a, xk, comb(xk, y, x), b)
+		  | GREATER => (case b
+		       of T(R, c, zk, z, d) => (case K.compare(xk, zk)
+			     of LESS => (case ins c
+				   of T(R, e, wk, w, f) =>
+					T(R, T(B,a,yk,y,e), wk, w, T(B,f,zk,z,d))
+				    | c => T(B, a, yk, y, T(R,c,zk,z,d))
+				  (* end case *))
+			      | EQUAL => let
+				  val x' = comb(xk, z, x)
+				  in
+				    T(color, a, yk, y, T(R, c, xk, x', d))
+				  end
+			      | GREATER => (case ins d
+				   of T(R, e, wk, w, f) =>
+					T(R, T(B,a,yk,y,c), zk, z, T(B,e,wk,w,f))
+				    | d => T(B, a, yk, y, T(R,c,zk,z,d))
+				  (* end case *))
+			    (* end case *))
+			| _ => T(B, a, yk, y, ins b)
+		      (* end case *))
+		(* end case *))
+    in
+        case ins m of
+            E => raise Fail "cannot be empty here"
+	 | T(_, a, yk, y, b) => MAP(!nItems', T(B, a, yk, y, b))
+    end
+    fun insertWith comb = insertWithi (fn (_, x1, x2) => comb(x1, x2))
 
   (* Is a key in the domain of the map? *)
     fun inDomain (MAP(_, t), k) = let
@@ -221,7 +272,7 @@ functor RedBlackMapFn (K : ORD_KEY) :> ORD_MAP where type Key.ord_key = K.ord_ke
 			   * left child recolored to black.
 			   *)
 			    (y, zip(p, T(B, a', yk', y', b')))
-			| (_, E, T(_, a', yk', y', b')) => 
+			| (_, E, T(_, a', yk', y', b')) =>
 			  (* node is black and right child is red; we replace the node with its
 			   * right child recolored to black.
 			   *)

@@ -1,6 +1,7 @@
 (* lib-base.sml
  *
- * COPYRIGHT (c) 1993 by AT&T Bell Laboratories.  See COPYRIGHT file for details.
+ * COPYRIGHT (c) 2020 The Fellowship of SML/NJ (http://www.smlnj.org)
+ * All rights reserved.
  *)
 
 structure LibBase : LIB_BASE =
@@ -20,4 +21,3 @@ structure LibBase : LIB_BASE =
 	  raise (Fail(concat[module, ".", func, ": ", msg]))
 
   end (* LibBase *)
-
